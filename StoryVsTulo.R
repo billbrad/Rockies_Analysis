@@ -1,5 +1,3 @@
-#Graphs for Dad
-
 #Story vs. Tulo: Comparison of Power Shortstops by Age
 
 library(Lahman)
@@ -23,7 +21,8 @@ TroyVsTrevor <- bind_rows(get_birthyear("Troy Tulowitzki"),
 
       #creating row in "Batting" for Trevor's age 26 season
 
-Batting %>% filter(playerID == "storytr01" | playerID == "tulowtr01") %>%
+Batting %>%
+  filter(playerID == "storytr01" | playerID == "tulowtr01") %>%
   add_row(playerID = "storytr01", yearID = 2019, HR = 35) -> batting.new
 
       #Creating the cumulative HR data frame
@@ -41,12 +40,18 @@ COL.SS.HR %>% filter(Age <= 26) -> COL.SS.26
 
       #creating the plot
       
-ggplot(COL.SS.26, aes(x = Age, y = CHR, linetype = Player)) +
+giraffe <- ggplot(COL.SS.26, aes(x = Age, y = CHR, linetype = Player)) +
   geom_line(color = "Purple", size = 1.25) +
-    annotate("text", x = 25, y= 125, label = "Story: 123,
-             Tulo: 122") +
-  xlab("Age for Season") + ylab("Career Home Runs") +
-  ggtitle("Story vs. Tulo:", subtitle = "Power Shortstops of the Rockies")
+    annotate("text", x = c(21.6, 23), y = c(0, 25),
+             label = c("Troy Tulowitzki", "Trevor Story")) +
+  xlab("Age for Season") + ylab("Career Home Runs by Year") +
+  ggtitle("Story vs. Tulo:", subtitle = "Power Shortstops of the Rockies") +
+  theme(legend.position = "none",
+        panel.grid.minor =   element_blank(),
+        panel.grid.major =   element_line(colour = "white", size=0.75))
+
+
+giraffe
 ggsave("StoryVsTulo.png")
 
  
